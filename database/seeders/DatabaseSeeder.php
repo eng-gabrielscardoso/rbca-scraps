@@ -32,26 +32,32 @@ class DatabaseSeeder extends Seeder
         Role::findByName(RoleEnum::MODERATOR->value)->givePermissionTo(Permission::all());
         Role::findByName(RoleEnum::PUBLISHER->value)->givePermissionTo(Permission::all());
 
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'secret' => 'Secret123456@',
+            'password' => 'Secret123456@',
         ]);
 
         User::factory()->create([
             'name' => 'Creator',
             'email' => 'creator@example.com',
-            'secret' => 'Secret123456@',
+            'password' => 'Secret123456@',
         ]);
 
         User::factory()->create([
             'name' => 'Commenter',
             'email' => 'commenter@example.com',
-            'secret' => 'Secret123456@',
+            'password' => 'Secret123456@',
         ]);
 
         Post::factory(10)->create();
 
         Comment::factory(30)->create();
+
+        $admin->assignRole(RoleEnum::MODERATOR->value);
+
+        foreach (User::all() as $user) {
+            $user->assignRole(RoleEnum::PUBLISHER->value);
+        }
     }
 }
