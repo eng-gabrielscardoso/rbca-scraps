@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Welcome">
+    <Head title="Posts">
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
@@ -51,6 +51,12 @@ import { Head, Link } from '@inertiajs/vue3';
                         <p class="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
                             {{ post.content }}
                         </p>
+                        <hr class="mb-2">
+                        <h2 class="mb-1 font-medium">Comments</h2>
+                        <details v-for="(comment, j) in post.comments" :key="j" class="cursor-pointer">
+                            <summary>{{ comment.user.name }} &lsaquo;<a :href="`mailto:${comment.user.email}`">{{ comment.user.email }}</a>&rsaquo;</summary>
+                            <p>{{ comment.content }}</p>
+                        </details>
                     </div>
                 </template>
                 <template v-else>

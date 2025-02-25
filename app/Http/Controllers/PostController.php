@@ -11,7 +11,7 @@ class PostController extends Controller
     public function index(): Response
     {
         return Inertia::render('Posts', [
-            'posts' => Post::all(),
+            'posts' => Post::with('user:id,name,email', 'comments.user:id,name,email')->get(),
         ]);
     }
 }
