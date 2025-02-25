@@ -25,5 +25,5 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/posts/{post}', [PostController::class, 'updatePost'])->name('posts.update');
 });
 
-require __DIR__ . '/settings.php';
-require __DIR__ . '/auth.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';

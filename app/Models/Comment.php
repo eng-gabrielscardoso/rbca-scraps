@@ -11,7 +11,7 @@ class Comment extends Model
     /** @use HasFactory<\Database\Factories\CommentFactory> */
     use HasFactory;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -92,7 +92,7 @@ class PostController extends Controller
 
         $post = Post::findOrFail($validated['post_id']);
 
-        $comment = new Comment();
+        $comment = new Comment;
         $comment->content = $validated['content'];
         $comment->user()->associate(Auth::user());
         $comment->post()->associate($post);
@@ -100,5 +100,4 @@ class PostController extends Controller
 
         return redirect()->back()->with('success', 'Comment added successfully!');
     }
-
 }
