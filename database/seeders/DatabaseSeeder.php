@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\PermissionEnum;
 use App\Enums\RoleEnum;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -47,5 +48,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'commenter@example.com',
             'secret' => 'Secret123456@',
         ]);
+
+        Post::factory(10)->create();
     }
 }
