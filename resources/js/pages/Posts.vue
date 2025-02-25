@@ -97,6 +97,33 @@ const isCommentAuthor = (comment: Comment) => {
 const isPostAuthor = (post: Post) => {
     return authUser.value && post.user_id === authUser.value.id;
 };
+
+const newCommentPostId = ref<number | null>(null);
+
+const newCommentForm = useForm({
+    content: '',
+    post_id: null as number | null,
+});
+
+const startAddingComment = (postId: number) => {
+    newCommentPostId.value = postId;
+    newCommentForm.post_id = postId;
+    newCommentForm.content = '';
+};
+
+const cancelAddingComment = () => {
+    newCommentPostId.value = null;
+    newCommentForm.reset();
+};
+
+const addComment = () => {
+    newCommentForm.post(route('comments.store'), {
+        onSuccess: () => {
+            newCommentPostId.value = null;
+            newCommentForm.reset();
+        },
+    });
+};
 </script>
 
 <template>
@@ -209,7 +236,43 @@ const isPostAuthor = (post: Post) => {
                         </template>
 
                         <hr class="mb-2" />
-                        <h2 class="mb-1 font-medium">Comments</h2>
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-medium">Comments</h2>
+                            <button
+                                v-if="authUser"
+                                @click="startAddingComment(post.id)"
+                                class="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
+                            >
+                                Add Comment
+                            </button>
+                        </div>
+                        <div v-if="newCommentPostId === post.id" class="mb-4">
+                            <form @submit.prevent="addComment">
+                                <textarea
+                                    v-model="newCommentForm.content"
+                                    class="w-full rounded-md border p-2 text-sm dark:border-[#3E3E3A] dark:bg-[#242424]"
+                                    rows="3"
+                                    placeholder="Write your comment here..."
+                                    required
+                                ></textarea>
+                                <div class="flex gap-2 mt-2">
+                                    <button
+                                        type="submit"
+                                        class="px-3 py-1 text-xs text-white bg-green-500 rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
+                                        :disabled="newCommentForm.processing"
+                                    >
+                                        Submit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="cancelAddingComment"
+                                        class="px-3 py-1 text-xs text-white bg-gray-500 rounded hover:bg-gray-600 dark:bg-gray-700 dark:hover:bg-gray-800"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                         <template v-if="post.comments.length">
                             <div v-for="(comment, j) in post.comments" :key="j" class="mb-4">
                                 <div class="flex items-center self-start gap-2">

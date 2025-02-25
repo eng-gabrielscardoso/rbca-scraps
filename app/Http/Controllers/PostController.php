@@ -83,4 +83,22 @@ class PostController extends Controller
         return redirect()->route('posts')->with('success', 'Post created successfully!');
     }
 
+    public function storeComment(Request $request)
+    {
+        $validated = $request->validate([
+            'content' => 'required|string|max:255',
+            'post_id' => 'required|exists:posts,id',
+        ]);
+
+        $post = Post::findOrFail($validated['post_id']);
+
+        $comment = new Comment();
+        $comment->content = $validated['content'];
+        $comment->user()->associate(Auth::user());
+        $comment->post()->associate($post);
+        $comment->save();
+
+        return redirect()->back()->with('success', 'Comment added successfully!');
+    }
+
 }

@@ -15,6 +15,8 @@ Route::get('dashboard', function () {
 Route::get('/posts', [PostController::class, 'index'])->name('posts');
 
 Route::middleware(['auth'])->group(function () {
+    Route::post('/comments', [PostController::class, 'storeComment'])->name('comments.store');
+
     Route::delete('/comments/{comment}', [PostController::class, 'deleteComment'])->name('comments.delete');
     Route::put('/comments/{comment}', [PostController::class, 'updateComment'])->name('comments.update');
 
